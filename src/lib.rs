@@ -10,6 +10,17 @@ pub use ffi::VERSION_REVISION;
 mod ffi;
 mod platform;
 
+pub fn init() -> bool {
+    match unsafe { ffi::glfwInit() } {
+        ffi::FALSE => false,
+        _ => true
+    }
+}
+
+pub fn terminate() {
+    unsafe { ffi::glfwTerminate(); }
+}
+
 pub fn get_version() -> (i32, i32, i32) {
     let mut major: c_int = 0;
     let mut minor: c_int = 0;

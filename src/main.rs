@@ -8,4 +8,11 @@ fn main() {
     println!("GLFW version macro is {}.{}.{}", glfw::VERSION_MAJOR,
                                                glfw::VERSION_MINOR,
                                                glfw::VERSION_REVISION);
+    if glfw::init() {
+        println!("Initialized GLFW!");
+    } else {
+        fail!("Failed to initialize GLFW.");
+    }
+
+    glfw::terminate();
 }
