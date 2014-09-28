@@ -3,6 +3,10 @@ extern crate libc;
 use libc::{c_int};
 use std::c_str;
 
+pub use ffi::VERSION_MAJOR;
+pub use ffi::VERSION_MINOR;
+pub use ffi::VERSION_REVISION;
+
 mod ffi;
 mod platform;
 
