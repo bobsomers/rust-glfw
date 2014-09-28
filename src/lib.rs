@@ -1,3 +1,3 @@
-#[test]
-fn it_works() {
+pub fn hello() {
+    println!("Hello from thm_glfw!");
 }
