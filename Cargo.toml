@@ -1,0 +1,5 @@
+[package]
+
+name = "thm_glfw"
+version = "0.0.1"
+authors = ["Bob Somers <bob@bobsomers.com>"]
