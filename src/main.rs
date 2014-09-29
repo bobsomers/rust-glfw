@@ -11,4 +11,10 @@ fn main() {
     let result = glfw::init();
     let glfw = result.ok().unwrap();
     println!("Initialized GLFW.");
+
+    let result2 = glfw::init();
+    match result2 {
+        Err(_) => println!("Failed to initialize GLFW twice."),
+        Ok(_) => println!("Succeeded initializing GLFW twice.")
+    }
 }

@@ -1,7 +1,7 @@
 extern crate libc;
+extern crate sync;
 
 use libc::{c_int};
-use std::c_str;
 
 pub use ffi::VERSION_MAJOR;
 pub use ffi::VERSION_MINOR;
@@ -17,12 +17,20 @@ pub struct Glfw;
 pub struct Error;
 
 // TODO: return Result<Glfw, Error>?
-// TODO: error on multiple initialization
 pub fn init() -> Result<Glfw, Error> {
-    match unsafe { ffi::glfwInit() } {
-        ffi::FALSE => Err(Error),
-        _ => Ok(Glfw)
+    use sync::one::{Once, ONCE_INIT};
+
+    static mut INIT: Once = ONCE_INIT;
+    let mut result = Err(Error);
+    unsafe {
+        INIT.doit(|| {
+            if ffi::glfwInit() != ffi::FALSE {
+                result = Ok(Glfw)
+            }
+        });
     }
+
+    result
 }
 
 pub fn get_version() -> (i32, i32, i32) {
@@ -36,10 +44,10 @@ pub fn get_version() -> (i32, i32, i32) {
 }
 
 pub fn get_version_string() -> String {
-    let version_cstr = unsafe {
-        c_str::CString::new(ffi::glfwGetVersionString(), false)
-    };
-    version_cstr.as_str().unwrap().to_string()
+    use std::string::raw;
+    use std::mem;
+
+    unsafe { raw::from_buf(mem::transmute(ffi::glfwGetVersionString())) }
 }
 
 impl Drop for Glfw {
